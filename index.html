@@ -52,6 +52,7 @@ body{margin:0;font-family:var(--font-body);background:var(--bg);color:var(--ink)
 header.top{position:sticky;top:0;z-index:15;display:flex;align-items:center;justify-content:space-between;gap:10px;background:linear-gradient(135deg,var(--fam-900),var(--fam-500));color:#fff;padding:14px 14px;text-align:center;}
 .logo-slot{position:relative;flex-shrink:0;display:grid;place-items:center;}
 .logo-slot svg{height:40px;width:auto;filter:drop-shadow(0 2px 4px rgba(0,0,0,.35));}
+.logo-slot .crestimg{height:40px;width:auto;max-width:100px;object-fit:contain;filter:drop-shadow(0 2px 4px rgba(0,0,0,.35));}
 .headertext{flex:1;min-width:0;}
 header.top .badge{display:inline-block;background:rgba(255,255,255,.18);border-radius:999px;padding:4px 14px;font-size:12px;letter-spacing:.03em;margin-bottom:8px;font-weight:600;}
 header.top h1{margin:0 0 4px;font-size:21px;font-family:var(--font-display);font-weight:600;letter-spacing:.02em;text-transform:uppercase;line-height:1.15;}
@@ -171,13 +172,14 @@ footer .mocknote{background:var(--neutral-100);border-radius:10px;padding:10px 1
 
 <header class="top">
   <div class="logo-slot">
-    <svg viewBox="0 0 220 120" xmlns="http://www.w3.org/2000/svg" aria-label="NSV logo">
+    <svg id="crestsvg" viewBox="0 0 220 120" xmlns="http://www.w3.org/2000/svg" aria-label="NSV logo">
       <polygon points="102.5,72.6 77.6,97.5 42.4,97.5 17.5,72.6 17.5,37.4 42.4,12.5 77.6,12.5 102.5,37.4" fill="#E43C24" stroke="#fff" stroke-width="3"/>
       <text x="60" y="72" text-anchor="middle" font-family="Arial,sans-serif" font-weight="900" font-size="52" fill="#fff">N</text>
       <polygon points="115,15 155,15 175,50 155,100 115,100 95,50" fill="#189C3C" stroke="#0B1B42" stroke-width="3"/>
       <text x="132" y="72" text-anchor="middle" font-family="Arial,sans-serif" font-weight="900" font-size="46" fill="#FBC900" stroke="#0B1B42" stroke-width="1">S</text>
       <polygon points="150,14 220,14 185,102" fill="#0B1B42" stroke="#fff" stroke-width="3"/>
     </svg>
+    <img class="crestimg" src="logo.png" alt="NSV logo" onload="document.getElementById('crestsvg').style.display='none'" onerror="this.style.display='none'">
   </div>
   <div class="headertext">
     <span class="badge">👨‍👧‍👧 Familie-visning</span>
