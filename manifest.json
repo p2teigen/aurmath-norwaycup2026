@@ -1,0 +1,17 @@
+{
+  "name": "Mathea & Aurora · Norway Cup 2026",
+  "short_name": "Cup 2026",
+  "description": "Kampoppsett, sluttspill, kart og pakkeliste for Mathea (J14) og Aurora (J16) i Norway Cup 2026",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#4A1942",
+  "theme_color": "#4A1942",
+  "orientation": "portrait",
+  "lang": "nb",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512-maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
