@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, viewport-fit=cover">
+<title>Familien Teigen · Norway Cup 2026 (mockup)</title>
+<meta name="theme-color" content="#4A1942">
+<meta name="color-scheme" content="light dark">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy-900:#0B1B42; --navy-700:#152a5e; --navy-500:#233a7a;
+  --green-700:#127a30; --green-600:#189C3C; --green-100:#e4f5e8;
+  --gold:#FBC900; --gold-100:#fdf3cf; --red:#E43C24; --ink:#1A1A1A;
+  --paper:#ffffff; --bg:#F7F7F5; --line:#e4e3df;
+  --neutral-100:#e9ebf1; --neutral-700:#4b5468;
+  --heading:var(--navy-900); --muted:#6b7280; --nc-link:var(--navy-700);
+  --radius:16px;
+
+  /* Egen "familie"-palett (plum) - KUN på header/hero/bunnmeny-kant, slik at man
+     med et blikk ser at dette ikke er en av de tre offisielle lagsidene (navy). */
+  --fam-900:#4A1942; --fam-700:#6E2564; --fam-500:#9C3F8E; --fam-accent:var(--gold);
+
+  --p-mathea:#FBC900; --p-aurora11:#12A594; --p-aurora7:#5B8DEF;
+
+  --font-display:"Oswald",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  --font-body:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  color-scheme:light dark;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --paper:#141b30; --bg:#0a0e1c; --ink:#e8eaf2; --line:#2a334f; --muted:#98a0b8;
+    --heading:#f0f2f8; --green-700:#3ddc72; --green-100:#123322; --gold-100:#3a2f05;
+    --neutral-100:#212a45; --neutral-700:#b7bedb; --nc-link:#8fb2f5;
+  }
+}
+*{box-sizing:border-box;}
+html{-webkit-text-size-adjust:100%;}
+body{margin:0;font-family:var(--font-body);background:var(--bg);color:var(--ink);padding-bottom:calc(64px + env(safe-area-inset-bottom));}
+
+header.top{position:sticky;top:0;z-index:15;display:flex;align-items:center;justify-content:space-between;gap:10px;background:linear-gradient(135deg,var(--fam-900),var(--fam-500));color:#fff;padding:14px 14px;text-align:center;}
+.logo-slot{position:relative;flex-shrink:0;display:grid;place-items:center;}
+.logo-slot svg{height:40px;width:auto;filter:drop-shadow(0 2px 4px rgba(0,0,0,.35));}
+.headertext{flex:1;min-width:0;}
+header.top .badge{display:inline-block;background:rgba(255,255,255,.18);border-radius:999px;padding:4px 14px;font-size:12px;letter-spacing:.03em;margin-bottom:8px;font-weight:600;}
+header.top h1{margin:0 0 4px;font-size:21px;font-family:var(--font-display);font-weight:600;letter-spacing:.02em;text-transform:uppercase;line-height:1.15;}
+header.top p{margin:0;opacity:.9;font-size:13.5px;}
+
+.hero{background:linear-gradient(135deg,var(--fam-900),var(--fam-500));color:#fff;border-radius:var(--radius);padding:16px 18px;margin-bottom:16px;position:relative;overflow:hidden;}
+.hero .nextlabel{font-size:11px;text-transform:uppercase;letter-spacing:.05em;opacity:.75;margin-bottom:4px;}
+.hero .nextmatch{font-size:17px;font-weight:600;font-family:var(--font-display);letter-spacing:.01em;}
+.hero .countdown{display:flex;align-items:baseline;gap:8px;margin-bottom:10px;}
+.hero .countdown b{font-size:30px;color:var(--fam-accent);line-height:1;font-family:var(--font-display);font-weight:600;}
+.hero .countdown span{font-size:13px;opacity:.9;}
+.hero .whochip{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.14);border-radius:999px;padding:4px 10px 4px 6px;font-size:12px;font-weight:700;margin-top:10px;}
+.hero .whochip .dot{width:9px;height:9px;border-radius:50%;display:inline-block;}
+
+main{max-width:720px;margin:0 auto;padding:16px;}
+section.panel{display:none;}
+section.panel.active{display:block;}
+
+.noticebar{display:flex;gap:10px;align-items:flex-start;background:var(--gold);color:#3a2f00;border-radius:var(--radius);padding:13px 15px;margin-bottom:14px;box-shadow:0 2px 10px rgba(0,0,0,.12);}
+.noticebar .noticeicon{font-size:20px;line-height:1;flex-shrink:0;}
+.noticebar .noticelabel{font-family:var(--font-display);font-weight:700;font-size:11.5px;text-transform:uppercase;letter-spacing:.04em;margin-bottom:2px;}
+.noticebar .noticetext{font-size:13.5px;font-weight:600;line-height:1.4;}
+
+.screenhome{display:none;}
+.screenhome.active{display:block;}
+.screenhome .intro{margin-bottom:16px;}
+
+.quickgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:6px;}
+.quickgrid.odd .qcard:last-child{grid-column:1 / -1;}
+.quickgrid .qcard{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:16px 8px;text-decoration:none;color:var(--heading);font-family:var(--font-display);font-weight:600;font-size:12.5px;text-align:center;line-height:1.25;min-height:84px;cursor:pointer;transition:transform .1s ease, background .1s ease;}
+.quickgrid .qcard .qicon{font-size:26px;line-height:1;}
+.quickgrid .qcard:active{transform:scale(.96);background:var(--green-100);}
+
+.screen{display:none;background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px 16px;margin-bottom:16px;}
+.screen.active{display:block;animation:screenin .18s ease;}
+@keyframes screenin{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+.screentop{display:flex;align-items:center;gap:10px;margin:0 0 14px;padding-bottom:12px;border-bottom:1px solid var(--line);}
+.backbtn{display:flex;align-items:center;gap:2px;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:8px 12px 8px 9px;font-family:var(--font-display);font-weight:600;font-size:13px;color:var(--heading);cursor:pointer;min-height:40px;flex-shrink:0;}
+.backbtn:active{background:var(--green-100);}
+.screentitle{margin:0;font-size:16px;font-family:var(--font-display);font-weight:600;color:var(--heading);letter-spacing:.01em;flex:1;min-width:0;}
+
+.card{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);padding:16px 18px;margin-bottom:16px;}
+.card h2{margin:0 0 4px;font-size:16px;color:var(--heading);display:flex;align-items:center;gap:8px;font-family:var(--font-display);}
+.card .sub{font-size:12.5px;color:var(--muted);margin-bottom:0;}
+.note{font-size:12.5px;color:var(--muted);line-height:1.5;margin-top:10px;}
+
+.daylabel{font-family:var(--font-display);font-weight:600;font-size:14px;color:var(--heading);margin:18px 0 8px;display:flex;align-items:center;gap:8px;}
+.daylabel:first-child{margin-top:0;}
+.daylabel .daychip{background:var(--fam-900);color:#fff;border-radius:999px;padding:2px 10px;font-size:11px;letter-spacing:.02em;}
+
+.matchlist{display:flex;flex-direction:column;gap:10px;margin-bottom:6px;}
+.matchcard{display:flex;align-items:flex-start;gap:10px;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:12px;border-left:4px solid var(--line);flex-wrap:wrap;}
+.matchcard.p-mathea{border-left-color:var(--p-mathea);}
+.matchcard.p-aurora11{border-left-color:var(--p-aurora11);}
+.matchcard.p-aurora7{border-left-color:var(--p-aurora7);}
+.mc-date{flex-shrink:0;text-align:center;min-width:42px;padding-top:2px;}
+.mc-date b{display:block;font-family:var(--font-display);font-size:21px;color:var(--heading);line-height:1;font-weight:600;}
+.mc-date span{display:block;font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.02em;margin-top:2px;}
+.mc-mid{flex:1;min-width:160px;padding-top:2px;}
+.mc-who{display:inline-flex;align-items:center;gap:5px;font-family:var(--font-display);font-weight:700;font-size:10.5px;text-transform:uppercase;letter-spacing:.02em;padding:2px 8px;border-radius:999px;margin-bottom:5px;color:#1A1A1A;}
+.mc-who.mathea{background:var(--p-mathea);}
+.mc-who.aurora11{background:var(--p-aurora11);color:#fff;}
+.mc-who.aurora7{background:var(--p-aurora7);color:#fff;}
+.mc-teams{font-size:14px;font-weight:600;color:var(--ink);line-height:1.3;}
+.mc-teams strong{color:var(--heading);}
+.mc-vs{color:var(--muted);font-weight:400;font-size:12px;}
+.mc-venue{font-size:12px;color:var(--muted);margin-top:4px;}
+.mc-venue.overlap{color:var(--fam-700);font-weight:700;}
+.mc-result{flex-shrink:0;text-align:right;padding-top:2px;align-self:center;}
+.result.pending{color:var(--neutral-700);font-weight:600;font-size:12px;white-space:nowrap;}
+.pill{display:inline-block;background:var(--green-600);color:#fff;border-radius:999px;padding:2px 10px;font-size:11px;font-weight:700;margin-right:6px;white-space:nowrap;}
+.pill.hb{background:var(--neutral-100);color:var(--neutral-700);}
+.pill.turf{background:var(--green-600);color:#fff;}
+.pill.grass{background:var(--neutral-100);color:var(--neutral-700);}
+
+.overlapcard{display:flex;gap:10px;align-items:center;background:var(--gold-100);border:1px dashed var(--fam-500);border-radius:12px;padding:10px 12px;margin:10px 0 16px;font-size:13px;}
+.overlapcard b{color:var(--fam-700);}
+
+.po-plass{font-family:var(--font-display);font-weight:700;font-size:12.5px;color:var(--heading);margin-bottom:2px;}
+.po-runde{font-size:10.5px;font-weight:700;color:var(--green-700);text-transform:uppercase;letter-spacing:.02em;margin-bottom:4px;}
+.posection{margin-bottom:22px;}
+.posection:last-child{margin-bottom:0;}
+.posection-head{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.posection-head .mc-who{margin-bottom:0;}
+.posection-head b{font-family:var(--font-display);font-size:13.5px;color:var(--heading);}
+
+.maplinks{flex-shrink:0;display:flex;flex-direction:column;gap:5px;margin-left:auto;}
+.maplink{display:flex;align-items:center;justify-content:center;gap:4px;font-size:10.5px;font-weight:700;color:var(--green-700);background:var(--green-100);text-decoration:none;padding:5px 9px;border-radius:8px;white-space:nowrap;min-height:30px;min-width:74px;}
+.maplink:active{background:var(--green-600);color:#fff;}
+
+.venue-row{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--line);}
+.venue-row:last-child{border-bottom:none;}
+.venue-row .vinfo{flex:1;min-width:0;}
+.venue-row .vname{font-weight:700;color:var(--heading);font-size:14.5px;}
+.venue-row .vaddr{font-size:12.5px;color:var(--muted);margin-top:2px;}
+
+.checklist label{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--line);font-size:14.5px;cursor:pointer;}
+.checklist label:last-child{border-bottom:none;}
+.checklist input{width:18px;height:18px;accent-color:var(--green-600);flex-shrink:0;}
+.checklist input:checked + span{text-decoration:line-through;color:var(--muted);}
+
+.linkbtn{display:inline-flex;align-items:center;gap:6px;background:var(--navy-700);color:#fff;text-decoration:none;padding:9px 14px;border-radius:10px;font-size:13px;font-weight:700;margin:4px 6px 4px 0;border:none;cursor:pointer;font-family:inherit;}
+.linkbtn.gold{background:var(--gold);color:#4a3900;}
+.linkbtn.outline{background:var(--neutral-100);color:var(--heading);}
+
+nav.bottomnav{position:fixed;left:0;right:0;bottom:0;z-index:30;display:flex;background:var(--paper);border-top:3px solid var(--fam-900);box-shadow:0 -2px 10px rgba(0,0,0,.10);}
+nav.bottomnav button{flex:1 1 0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;border:none;background:transparent;padding:8px 4px 7px;font-size:11.5px;font-weight:700;color:var(--muted);cursor:pointer;position:relative;min-height:44px;}
+nav.bottomnav button .ico{font-size:19px;line-height:1;}
+nav.bottomnav button.active{color:var(--heading);}
+nav.bottomnav button.active:before{content:"";position:absolute;top:0;left:50%;transform:translate(-50%,-3px) rotate(180deg);width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-bottom:6px solid var(--fam-500);}
+
+footer{text-align:center;font-size:11.5px;color:var(--muted);padding:18px 16px 40px;line-height:1.6;}
+footer .mocknote{background:var(--neutral-100);border-radius:10px;padding:10px 14px;margin:0 auto 12px;max-width:560px;}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="logo-slot">
+    <svg viewBox="0 0 220 120" xmlns="http://www.w3.org/2000/svg" aria-label="NSV logo">
+      <polygon points="102.5,72.6 77.6,97.5 42.4,97.5 17.5,72.6 17.5,37.4 42.4,12.5 77.6,12.5 102.5,37.4" fill="#E43C24" stroke="#fff" stroke-width="3"/>
+      <text x="60" y="72" text-anchor="middle" font-family="Arial,sans-serif" font-weight="900" font-size="52" fill="#fff">N</text>
+      <polygon points="115,15 155,15 175,50 155,100 115,100 95,50" fill="#189C3C" stroke="#0B1B42" stroke-width="3"/>
+      <text x="132" y="72" text-anchor="middle" font-family="Arial,sans-serif" font-weight="900" font-size="46" fill="#FBC900" stroke="#0B1B42" stroke-width="1">S</text>
+      <polygon points="150,14 220,14 185,102" fill="#0B1B42" stroke="#fff" stroke-width="3"/>
+    </svg>
+  </div>
+  <div class="headertext">
+    <span class="badge">👨‍👧‍👧 Familie-visning</span>
+    <h1>Mathea &amp; Aurora</h1>
+    <p>Norway Cup 2026 · 25. juli–1. august</p>
+  </div>
+  <div class="logo-slot">
+    <svg viewBox="0 0 90 60" xmlns="http://www.w3.org/2000/svg" aria-label="Norway Cup logo">
+      <text x="45" y="16" text-anchor="middle" font-family="Arial,sans-serif" font-weight="900" font-size="17" letter-spacing="1" fill="#fff">N<tspan fill="none" stroke="#fff" stroke-width="1.4">O</tspan>R</text>
+      <circle cx="53.5" cy="10.5" r="6.3" fill="none" stroke="#fff" stroke-width="1.4"/>
+      <text x="45" y="34" text-anchor="middle" font-family="Arial,sans-serif" font-weight="900" font-size="17" letter-spacing="1" fill="#fff">WAY</text>
+      <text x="45" y="52" text-anchor="middle" font-family="Arial,sans-serif" font-weight="900" font-size="17" letter-spacing="1" fill="#fff">CUP</text>
+    </svg>
+  </div>
+</header>
+
+<main>
+  <div class="hero">
+    <div class="nextlabel">Neste kamp</div>
+    <div class="countdown"><b>3</b><span>dager, 4 timer</span></div>
+    <div class="nextmatch">Kvernbit IL 1 <span style="opacity:.7;font-weight:400">vs</span> Aurora</div>
+    <div style="font-size:13px;opacity:.9;margin-top:2px">Søndag 26.07 · 08:00 · Bjølsenfeltet (03BJ11)</div>
+    <div class="whochip"><span class="dot" style="background:var(--p-aurora11)"></span>Aurora · J16 11'er</div>
+  </div>
+
+  <div class="noticebar">
+    <span class="noticeicon">📍</span>
+    <div>
+      <div class="noticelabel">Bra å vite</div>
+      <div class="noticetext">Søndag og tirsdag spiller begge jentene på Ekeberg samme dag — fin sjanse til å se begge kampene, og for dem å heie på hverandre.</div>
+    </div>
+  </div>
+
+  <!-- ================= FAMILIE (hub) ================= -->
+  <section class="panel active" id="panel-familie">
+
+    <div class="screenhome active" id="home-familie">
+      <div class="intro">
+        <p style="font-size:14.5px;line-height:1.5;margin:0 0 4px">Samler kampene til Mathea (NSV J14) og Aurora (J16, samarbeidslag) på ett sted, i samme design som lagsiden.</p>
+      </div>
+      <nav class="quickgrid" aria-label="Snarveier">
+        <a href="#scr-fam-kampoppsett" class="qcard" data-target="scr-fam-kampoppsett"><span class="qicon">⚽</span><span>Kampoppsett</span></a>
+        <a href="#scr-fam-sluttspill" class="qcard" data-target="scr-fam-sluttspill"><span class="qicon">🏆</span><span>Sluttspill</span></a>
+        <a href="#scr-fam-kart" class="qcard" data-target="scr-fam-kart"><span class="qicon">🗺️</span><span>Kart &amp; reisevei</span></a>
+        <a href="#scr-fam-pakkeliste" class="qcard" data-target="scr-fam-pakkeliste"><span class="qicon">🎒</span><span>Pakkeliste</span></a>
+      </nav>
+    </div>
+
+    <div class="screen" id="scr-fam-kampoppsett">
+      <div class="screentop"><button class="backbtn" type="button" data-back>‹ <span>Tilbake</span></button><h2 class="screentitle">⚽ Kampoppsett - begge</h2></div>
+      <div class="screenbody" id="fam-matchlist"></div>
+    </div>
+
+    <div class="screen" id="scr-fam-sluttspill">
+      <div class="screentop"><button class="backbtn" type="button" data-back>‹ <span>Tilbake</span></button><h2 class="screentitle">🏆 Sluttspill - mulige kamper</h2></div>
+      <div class="screenbody">
+        <p class="note" style="margin-top:0">Gruppespillet er ikke ferdig ennå, så motstander avhenger av sluttplassering i gruppa. Under vises <strong>alle mulige neste kamper</strong> for hver av de tre lagene - riktig kamp blir tydelig når gruppespillet er avgjort.</p>
+        <div class="posection">
+          <div class="posection-head"><div class="mc-who mathea">Mathea · J14</div></div>
+          <div class="matchlist" id="fam-po-mathea"></div>
+        </div>
+        <div class="posection">
+          <div class="posection-head"><div class="mc-who aurora11">Aurora · 11'er</div></div>
+          <div class="matchlist" id="fam-po-aurora11"></div>
+        </div>
+        <div class="posection">
+          <div class="posection-head"><div class="mc-who aurora7">Aurora · 7'er</div></div>
+          <div class="matchlist" id="fam-po-aurora7"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="screen" id="scr-fam-kart">
+      <div class="screentop"><button class="backbtn" type="button" data-back>‹ <span>Tilbake</span></button><h2 class="screentitle">🗺️ Kart &amp; reisevei</h2></div>
+      <div class="screenbody">
+        <p class="note" style="margin-top:0">«Kart» åpner stedet i Google Maps. «Reiserute» viser vei dit med kollektivtransport fra der du er nå. «Arenakart» er Norway Cups eget kart over banenummer på stedet.</p>
+        <div id="fam-venuelist"></div>
+      </div>
+    </div>
+
+    <div class="screen" id="scr-fam-pakkeliste">
+      <div class="screentop"><button class="backbtn" type="button" data-back>‹ <span>Tilbake</span></button><h2 class="screentitle">🎒 Pakkeliste</h2></div>
+      <div class="screenbody">
+        <div class="checklist" id="packlist">
+          <label><input type="checkbox" data-key="sko"><span>Fotballsko</span></label>
+          <label><input type="checkbox" data-key="drakt"><span>Drakt</span></label>
+          <label><input type="checkbox" data-key="shorts"><span>Shorts</span></label>
+          <label><input type="checkbox" data-key="strompe"><span>Fotballstrømper</span></label>
+          <label><input type="checkbox" data-key="legg"><span>Leggskinner</span></label>
+          <label><input type="checkbox" data-key="bag"><span>Sekk / bag</span></label>
+          <label><input type="checkbox" data-key="flaske"><span>Drikkeflaske</span></label>
+          <label><input type="checkbox" data-key="lagklaer"><span>Lagklær, treningsbukse, jakke/genser</span></label>
+          <label><input type="checkbox" data-key="toalett"><span>Toalettsaker</span></label>
+          <label><input type="checkbox" data-key="solkrem"><span>Solkrem</span></label>
+          <label><input type="checkbox" data-key="fritid"><span>Fritidsklær</span></label>
+          <label><input type="checkbox" data-key="joggesko"><span>Joggesko</span></label>
+          <label><input type="checkbox" data-key="oreplugger"><span>Ørepropper/sovemaske</span></label>
+          <label><input type="checkbox" data-key="lommepenger"><span>Lommepenger</span></label>
+          <label><input type="checkbox" data-key="regntoy"><span>Regntøy / paraply / poncho</span></label>
+          <label><input type="checkbox" data-key="lader"><span>Lader til mobil</span></label>
+          <label><input type="checkbox" data-key="id"><span>Bilde av pass eller ID-kort</span></label>
+        </div>
+        <p class="note">Huk av det du har pakket – valgene lagres i telefonen din. (Forkortet liste i denne mockupen - full liste finnes på lagsiden.)</p>
+      </div>
+    </div>
+
+    <div class="overlapcard" style="margin-top:16px">📅 <span><b>Søndag:</b> Aurora 15:30 → Mathea 19:40, begge på Ekeberg. <b>Tirsdag:</b> Aurora 12:00 → Mathea 15:30, også begge på Ekeberg.</span></div>
+
+  </section>
+
+  <!-- ================= MATHEA ================= -->
+  <section class="panel" id="panel-mathea">
+    <div class="card" style="margin-bottom:16px">
+      <h2>⚽ NSV J14</h2>
+      <div class="sub">Jenter 2012</div>
+    </div>
+    <div class="matchlist" id="mathea-matchlist"></div>
+    <a class="linkbtn gold" href="https://norwaycup.cupmanager.net/2026,nb/result/team/80213927" target="_blank" rel="noopener">⚽ Sjekk live på Norway Cup →</a>
+    <button type="button" class="linkbtn outline" data-target="scr-mathea-sluttspill">🏆 Sluttspill</button>
+
+    <div class="screen" id="scr-mathea-sluttspill">
+      <div class="screentop"><button class="backbtn" type="button" data-back>‹ <span>Tilbake</span></button><h2 class="screentitle">🏆 Sluttspill - mulige kamper</h2></div>
+      <div class="screenbody">
+        <p class="note" style="margin-top:0">Avhenger av plassering i gruppa - her er alle 5 mulighetene.</p>
+        <div class="matchlist" id="mathea-po-matchlist"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= AURORA ================= -->
+  <section class="panel" id="panel-aurora">
+    <div class="daylabel"><span class="daychip" style="background:var(--p-aurora11)">J16 · 11'er</span></div>
+    <div class="matchlist" id="aurora11-matchlist"></div>
+    <a class="linkbtn" style="background:var(--p-aurora11)" href="https://norwaycup.cupmanager.net/2026,nb/result/team/78377322" target="_blank" rel="noopener">⚽ Sjekk live på Norway Cup →</a>
+
+    <div class="daylabel" style="margin-top:26px"><span class="daychip" style="background:var(--p-aurora7)">J16 · 7'er</span></div>
+    <div class="matchlist" id="aurora7-matchlist"></div>
+    <a class="linkbtn" style="background:var(--p-aurora7)" href="https://norwaycup.cupmanager.net/2026,nb/result/team/78377319" target="_blank" rel="noopener">⚽ Sjekk live på Norway Cup →</a>
+
+    <button type="button" class="linkbtn outline" data-target="scr-aurora-sluttspill" style="margin-top:8px">🏆 Sluttspill</button>
+
+    <div class="screen" id="scr-aurora-sluttspill">
+      <div class="screentop"><button class="backbtn" type="button" data-back>‹ <span>Tilbake</span></button><h2 class="screentitle">🏆 Sluttspill - mulige kamper</h2></div>
+      <div class="screenbody">
+        <p class="note" style="margin-top:0">Avhenger av plassering i gruppa - her er alle mulighetene for begge lagene.</p>
+        <div class="posection">
+          <div class="posection-head"><div class="mc-who aurora11">Aurora · 11'er</div></div>
+          <div class="matchlist" id="aurora11-po-matchlist"></div>
+        </div>
+        <div class="posection">
+          <div class="posection-head"><div class="mc-who aurora7">Aurora · 7'er</div></div>
+          <div class="matchlist" id="aurora7-po-matchlist"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="mocknote">🎨 <b>Mockup</b> — samme designsystem som NSV-siden (kort, kampoppsett, kart-knapper, underlag-merker, pakkeliste), men header/hero/bunnmeny bruker en egen lilla farge i stedet for navy, slik at du raskt ser at dette er familie-visningen og ikke en av de tre lagsidene.</div>
+  Familien Teigen · Norway Cup 2026
+</footer>
+
+<nav class="bottomnav" id="tabs">
+  <button data-tab="familie" class="active"><span class="ico">🏠</span><span>Familie</span></button>
+  <button data-tab="mathea"><span class="ico">⚽</span><span>Mathea</span></button>
+  <button data-tab="aurora"><span class="ico">⚽</span><span>Aurora</span></button>
+</nav>
+
+<script>
+// ---------------------------------------------------------------
+// STEDER - samme prinsipp som VENUES i data.js på hovedsiden.
+// Adresser for Valle Hovin og Abildsø er bekreftet via Norway Cups
+// eget banekart-arkiv (norwaycup.no/alt-om-turneringen/banekart).
+// Underlag er kun satt der det er bekreftet - "null" betyr ukjent
+// for akkurat den banen, se arenakartet i stedet for å gjette.
+// ---------------------------------------------------------------
+var VENUES = {
+  ekeberg:{label:"Ekeberg idrettspark (Ekebergsletta)", address:"Ekebergveien 101, 1178 Oslo",
+    info:"Kun 07EK11, 26EK11 og 27EK11 er kunstgress (11'er-baner), resten er gress. Underlag på 7'er-banene (EK7) er ikke bekreftet - se banekartet.",
+    kart:"https://norwaycup.no/wp-content/uploads/2026/07/Arenakart-NC2026-Nettside-2.pdf"},
+  rustad:{label:"Rustad idrettsplass", address:"Paal Bergs vei 135, 0692 Oslo",
+    info:"Kun 01RU11 er kunstgress, resten er gress.",
+    kart:"https://norwaycup.no/wp-content/uploads/2026/07/Rustad_2026.pdf"},
+  bjolsen:{label:"Bjølsenfeltet (Voldsløkka)", address:"Voldsløkka, Oslo",
+    info:"Kun 01BJ11 er kunstgress, resten er gress.",
+    kart:"https://norwaycup.no/wp-content/uploads/2026/07/Voldslokka_Bjolsen_2026.pdf"},
+  vallehovin:{label:"Valle Hovin idrettspark", address:"Innspurten 16, 0663 Oslo",
+    info:"Underlag varierer per bane - se banekartet.",
+    kart:"https://norwaycup.no/wp-content/uploads/2026/07/Endelig-skilt-2-banekart.png"},
+  abildso:{label:"Abildsø idrettspark", address:"Smedbergveien 25, 1187 Oslo",
+    info:"Underlag varierer per bane - se banekartet.",
+    kart:"https://norwaycup.no/wp-content/uploads/2026/07/Abildso_2026.pdf"},
+  furuset:{label:"Furuset idrettspark", address:"Strømsveien 303, 1081 Oslo",
+    kart:"https://norwaycup.no/wp-content/uploads/2026/07/Furuset_2026-1.pdf"},
+  skolen:{label:"Sogn Avdeling Blindern (overnatting Mathea)", address:"Sognsveien 80, 0855 Oslo"}
+};
+
+var BANE45_KART = "https://norwaycup.no/wp-content/uploads/2025/11/2e555191-9488-4d29-8e9f-30e16877cb2b.pdf";
+
+var MATHEA = [
+  {dato:"Søndag 26.07", tid:"19:40", bane:"Ekeberg 38 (EK11)", venue:"ekeberg", underlag:"grass", hjemme:"NSV", borte:"Røa IL", borteFlag:false},
+  {dato:"Mandag 27.07", tid:"10:30", bane:"Ekeberg 42 (EK11)", venue:"ekeberg", underlag:"grass", hjemme:"Godøy IL", borte:"NSV", borteFlag:true},
+  {dato:"Mandag 27.07", tid:"19:40", bane:"Ekeberg 45 (EK11)", venue:"ekeberg", underlag:"grass", hjemme:"NSV", borte:"Nord SK", borteFlag:false, banekart:BANE45_KART, banekartLabel:"Kart - Bane 45"},
+  {dato:"Tirsdag 28.07", tid:"15:30", bane:"Ekeberg 45 (EK11)", venue:"ekeberg", underlag:"grass", hjemme:"Askøy FK", borte:"NSV", borteFlag:true, banekart:BANE45_KART, banekartLabel:"Kart - Bane 45"}
+];
+
+var AURORA11 = [
+  {dato:"Søndag 26.07", tid:"08:00", bane:"Bjølsenfeltet 03BJ11", venue:"bjolsen", underlag:"grass", hjemme:"Kvernbit IL 1", borte:"Aurora", borteFlag:true},
+  {dato:"Søndag 26.07", tid:"15:30", bane:"Ekeberg 26 (EK11)", venue:"ekeberg", underlag:"turf", hjemme:"Aurora", borte:"Nordhordland/Radøy", borteFlag:false},
+  {dato:"Mandag 27.07", tid:"17:45", bane:"Abildsø 02 (AB11)", venue:"abildso", underlag:"grass", hjemme:"Aurora", borte:"Giske IL/Godøy", borteFlag:false},
+  {dato:"Tirsdag 28.07", tid:"08:00", bane:"Rustad 02 (RU11)", venue:"rustad", underlag:"grass", hjemme:"Fotballklubben Landsås", borte:"Aurora", borteFlag:true}
+];
+
+var AURORA7 = [
+  {dato:"Søndag 26.07", tid:"10:00", bane:"Valle Hovin 04 (VA7)", venue:"vallehovin", underlag:"turf", hjemme:"Sykkylven IL", borte:"Aurora", borteFlag:true},
+  {dato:"Mandag 27.07", tid:"12:00", bane:"Valle Hovin 04 (VA7)", venue:"vallehovin", underlag:"turf", hjemme:"Aurora", borte:"Geilo IL", borteFlag:false},
+  {dato:"Tirsdag 28.07", tid:"12:00", bane:"Ekeberg 22 (EK7)", venue:"ekeberg", underlag:"grass", hjemme:"Bønes Idrettslag", borte:"Aurora", borteFlag:true}
+];
+
+var MATHEA_PO = [
+  {plass:"1. plass i gruppa", runde:"Playoff A · 1/16-finale (bye)", dato:"Torsdag 30.07", tid:"10:30", bane:"Ekeberg 30 (EK11)", venue:"ekeberg", underlag:"grass", motstander:"Vinner av en tidligere kamp"},
+  {plass:"2. plass i gruppa", runde:"Playoff A · 1/16-finale", dato:"Torsdag 30.07", tid:"10:30", bane:"Rustad 03 (RU11)", venue:"rustad", underlag:"grass", motstander:"1. i gruppe 8"},
+  {plass:"3. plass i gruppa", runde:"Playoff B · 1/16-finale (bye)", dato:"Onsdag 29.07", tid:"13:50", bane:"Ekeberg 30 (EK11)", venue:"ekeberg", underlag:"grass", motstander:"Vinner av en tidligere kamp"},
+  {plass:"4. plass i gruppa", runde:"Playoff B · 1/16-finale", dato:"Onsdag 29.07", tid:"17:10", bane:"Rustad 03 (RU11)", venue:"rustad", underlag:"grass", motstander:"3. i gruppe 9"},
+  {plass:"5. plass i gruppa", runde:"Playoff B · 1/32-finale", dato:"Onsdag 29.07", tid:"10:30", bane:"Rustad 05 (RU11)", venue:"rustad", underlag:"grass", motstander:"4. i gruppe 20"}
+];
+
+var AURORA11_PO = [
+  {plass:"1. plass i gruppa", runde:"Playoff A · 1/8-finale (bye)", dato:"Torsdag 30.07", tid:"16:15", bane:"Ekeberg 02 (EK11)", venue:"ekeberg", underlag:"grass", motstander:"Vinner av en tidligere kamp"},
+  {plass:"2. plass i gruppa", runde:"Playoff A · 1/16-finale", dato:"Torsdag 30.07", tid:"08:00", bane:"Ekeberg 06 (EK11)", venue:"ekeberg", underlag:"grass", motstander:"2. i gruppe 7"},
+  {plass:"3. plass i gruppa", runde:"Playoff B · 1/8-finale (bye)", dato:"Torsdag 30.07", tid:"09:00", bane:"Rustad 05 (RU11)", venue:"rustad", underlag:"grass", motstander:"Vinner av en tidligere kamp"},
+  {plass:"4. plass i gruppa", runde:"Playoff B · 1/16-finale", dato:"Onsdag 29.07", tid:"13:00", bane:"Ekeberg 38 (EK11)", venue:"ekeberg", underlag:"grass", motstander:"4. i gruppe 1"},
+  {plass:"5. plass i gruppa", runde:"Playoff B · 1/16-finale", dato:"Onsdag 29.07", tid:"11:30", bane:"Furuset 01 (FU11)", venue:"furuset", underlag:"turf", motstander:"3. i gruppe 2"}
+];
+
+var AURORA7_PO = [
+  {plass:"1. plass i gruppa", runde:"Playoff A · 1/8-finale", dato:"Onsdag 29.07", tid:"14:00", bane:"Ekeberg 22 (EK7)", venue:"ekeberg", underlag:"grass", motstander:"2. i gruppe 4"},
+  {plass:"2. plass i gruppa", runde:"Playoff A · 1/8-finale", dato:"Onsdag 29.07", tid:"14:00", bane:"Valle Hovin 04 (VA7)", venue:"vallehovin", underlag:"turf", motstander:"1. i gruppe 2"},
+  {plass:"3. plass i gruppa", runde:"Playoff B · 1/8-finale", dato:"Onsdag 29.07", tid:"17:00", bane:"Ekeberg 23 (EK7)", venue:"ekeberg", underlag:null, motstander:"4. i gruppe 2"},
+  {plass:"4. plass i gruppa", runde:"Playoff B · 1/8-finale", dato:"Onsdag 29.07", tid:"17:00", bane:"Valle Hovin 05 (VA7)", venue:"vallehovin", underlag:null, motstander:"3. i gruppe 5"}
+];
+
+function mapsLink(addr){ return "https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(addr); }
+function transitLink(addr){ return "https://www.google.com/maps/dir/?api=1&destination="+encodeURIComponent(addr)+"&travelmode=transit"; }
+function underlagPill(u){
+  if(u==="turf") return '<span class="pill turf">Kunstgress</span>';
+  if(u==="grass") return '<span class="pill grass">Gress</span>';
+  return "";
+}
+function mapLinksHtml(addr, extraLinks){
+  var extra = (extraLinks||[]).map(function(l){
+    return '<a class="maplink" href="'+l.url+'" target="_blank" rel="noopener">🗺️<span>'+l.label+'</span></a>';
+  }).join("");
+  return '<div class="maplinks"><a class="maplink" href="'+mapsLink(addr)+'" target="_blank" rel="noopener">📍<span>Kart</span></a><a class="maplink" href="'+transitLink(addr)+'" target="_blank" rel="noopener">🚌<span>Reiserute</span></a>'+extra+'</div>';
+}
+function matchVenueBtns(m){
+  var v = VENUES[m.venue];
+  if(!v || !v.address) return "";
+  var extra = m.banekart ? [{label:m.banekartLabel||"Kart til banen", url:m.banekart}] : (v.kart?[{label:"Arenakart", url:v.kart}]:[]);
+  return mapLinksHtml(v.address, extra);
+}
+function renderVenueList(){
+  document.getElementById("fam-venuelist").innerHTML = Object.values(VENUES).map(function(v){
+    var extra = v.kart ? [{label:"Arenakart", url:v.kart}] : [];
+    return '<div class="venue-row"><div class="vinfo"><div class="vname">'+v.label+'</div><div class="vaddr">'+v.address+'</div>'+(v.info?'<div class="vaddr">'+v.info+'</div>':'')+'</div>'+(v.address?mapLinksHtml(v.address, extra):'')+'</div>';
+  }).join("");
+}
+
+function matchCardHtml(m, whoLabel, whoClass, cardClass){
+  var dateParts = m.dato.split(" ");
+  var weekday = (dateParts[0]||"").slice(0,3).toUpperCase();
+  var dayMonth = dateParts[1] || m.dato;
+  var home = '<strong>'+m.hjemme+'</strong>';
+  var away = '<strong>'+m.borte+'</strong>';
+  var pillU = underlagPill(m.underlag);
+  var whoChip = whoLabel ? '<div class="mc-who '+whoClass+'">'+whoLabel+'</div>' : "";
+  return '<div class="matchcard '+cardClass+'">'
+    + '<div class="mc-date"><span>'+weekday+'</span><b>'+dayMonth+'</b><span>'+m.tid+'</span></div>'
+    + '<div class="mc-mid">'
+    +   whoChip
+    +   '<div class="mc-teams">'+home+' <span class="mc-vs">vs</span> '+away+'</div>'
+    +   '<div class="mc-venue">'+m.bane+(pillU?(' '+pillU):'')+'</div>'
+    + '</div>'
+    + '<div class="mc-result"><span class="result pending">Ikke spilt</span></div>'
+    + matchVenueBtns(m)
+    + '</div>';
+}
+
+function playoffCardHtml(p, cardClass){
+  var dateParts = p.dato.split(" ");
+  var weekday = (dateParts[0]||"").slice(0,3).toUpperCase();
+  var dayMonth = dateParts[1] || p.dato;
+  var pillU = underlagPill(p.underlag);
+  return '<div class="matchcard '+cardClass+'">'
+    + '<div class="mc-date"><span>'+weekday+'</span><b>'+dayMonth+'</b><span>'+p.tid+'</span></div>'
+    + '<div class="mc-mid">'
+    +   '<div class="po-plass">'+p.plass+'</div>'
+    +   '<div class="po-runde">'+p.runde+'</div>'
+    +   '<div class="mc-teams">vs '+p.motstander+'</div>'
+    +   '<div class="mc-venue">'+p.bane+(pillU?(' '+pillU):'')+'</div>'
+    + '</div>'
+    + '<div class="mc-result"><span class="result pending">Ikke avgjort</span></div>'
+    + matchVenueBtns(p)
+    + '</div>';
+}
+function renderPlayoffList(elId, list, cardClass){
+  document.getElementById(elId).innerHTML = list.map(function(p){ return playoffCardHtml(p, cardClass); }).join("");
+}
+
+function renderFamilieList(){
+  var DAY_ORDER = ["Søndag 26.07","Mandag 27.07","Tirsdag 28.07"];
+  var OVERLAP = {
+    "Søndag 26.07":"📅 <b>Ekeberg hele ettermiddagen/kvelden:</b> Aurora 15:30 → Mathea 19:40. God tid til begge, og jentene kan trolig se hverandre spille.",
+    "Tirsdag 28.07":"📅 <b>Ekeberg midt på dagen:</b> Aurora 12:00 → Mathea 15:30. Nok en dag med god sjanse til å se begge."
+  };
+  var all = []
+    .concat(MATHEA.map(function(m){ return {m:m, who:"Mathea · J14", cls:"mathea", card:"p-mathea"}; }))
+    .concat(AURORA11.map(function(m){ return {m:m, who:"Aurora · 11'er", cls:"aurora11", card:"p-aurora11"}; }))
+    .concat(AURORA7.map(function(m){ return {m:m, who:"Aurora · 7'er", cls:"aurora7", card:"p-aurora7"}; }));
+
+  var html = DAY_ORDER.map(function(day){
+    var items = all.filter(function(x){ return x.m.dato===day; });
+    items.sort(function(a,b){ return a.m.tid.localeCompare(b.m.tid); });
+    var cards = items.map(function(x){ return matchCardHtml(x.m, x.who, x.cls, x.card); }).join("");
+    var overlap = OVERLAP[day] ? '<div class="overlapcard">'+OVERLAP[day]+'</div>' : "";
+    return '<div class="daylabel"><span class="daychip">'+day+'</span></div><div class="matchlist">'+cards+'</div>'+overlap;
+  }).join("") + '<div class="card" style="margin-top:6px"><h2 style="font-size:14.5px">🏆 Ons 29. / tors 30.07 - sluttspill</h2><div class="sub">Ikke fastlagt ennå for noen av lagene - avhenger av plassering i gruppespillet. Oppdateres her når Norway Cup publiserer sluttspilloppsettet.</div></div>';
+
+  document.getElementById("fam-matchlist").innerHTML = html;
+}
+
+function renderTeamList(elId, matches){
+  document.getElementById(elId).innerHTML = matches.map(function(m){ return matchCardHtml(m, null, "", ""); }).join("");
+}
+
+renderVenueList();
+renderFamilieList();
+renderTeamList("mathea-matchlist", MATHEA);
+renderTeamList("aurora11-matchlist", AURORA11);
+renderTeamList("aurora7-matchlist", AURORA7);
+
+renderPlayoffList("fam-po-mathea", MATHEA_PO, "p-mathea");
+renderPlayoffList("fam-po-aurora11", AURORA11_PO, "p-aurora11");
+renderPlayoffList("fam-po-aurora7", AURORA7_PO, "p-aurora7");
+renderPlayoffList("mathea-po-matchlist", MATHEA_PO, "p-mathea");
+renderPlayoffList("aurora11-po-matchlist", AURORA11_PO, "p-aurora11");
+renderPlayoffList("aurora7-po-matchlist", AURORA7_PO, "p-aurora7");
+
+// --- Navigasjon: samme fram/tilbake-mønster (quickgrid -> screen -> Tilbake) som hovedsiden ---
+function openScreen(screenId){
+  var screen = document.getElementById(screenId);
+  if(!screen) return;
+  var panel = screen.closest("section.panel");
+  if(!panel) return;
+  var home = panel.querySelector(".screenhome");
+  if(home) home.classList.remove("active");
+  panel.querySelectorAll(".screen").forEach(function(s){ s.classList.remove("active"); });
+  screen.classList.add("active");
+}
+function closeScreensIn(panel){
+  panel.querySelectorAll(".screen").forEach(function(s){ s.classList.remove("active"); });
+  var home = panel.querySelector(".screenhome");
+  if(home) home.classList.add("active");
+}
+document.addEventListener("click", function(e){
+  var card = e.target.closest("[data-target]");
+  if(card){ e.preventDefault(); openScreen(card.dataset.target); return; }
+  var back = e.target.closest("[data-back]");
+  if(back){
+    e.preventDefault();
+    var panel = back.closest("section.panel");
+    if(panel) closeScreensIn(panel);
+  }
+});
+
+document.getElementById("tabs").addEventListener("click", function(e){
+  var btn = e.target.closest("button[data-tab]");
+  if(!btn) return;
+  document.querySelectorAll("nav.bottomnav button").forEach(function(b){ b.classList.remove("active"); });
+  btn.classList.add("active");
+  document.querySelectorAll("section.panel").forEach(function(p){ p.classList.remove("active"); });
+  document.getElementById("panel-"+btn.dataset.tab).classList.add("active");
+  window.scrollTo({top:0, behavior:"instant"});
+});
+
+// Pakkeliste - huket av lagres i telefonen (samme prinsipp som lagsiden, egen nøkkel-prefiks)
+document.querySelectorAll("#packlist input").forEach(function(cb){
+  var key = "fam-pack-"+cb.dataset.key;
+  cb.checked = localStorage.getItem(key) === "1";
+  cb.addEventListener("change", function(){ localStorage.setItem(key, cb.checked ? "1":"0"); });
+});
+</script>
+
+</body>
+</html>
