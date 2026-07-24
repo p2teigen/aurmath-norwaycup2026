@@ -728,6 +728,25 @@ function dayMonthKey(str){
   if(!m) return null;
   return (m[1].length<2?"0"+m[1]:m[1]) + "-" + (m[2].length<2?"0"+m[2]:m[2]);
 }
+// Normaliserer et lagnavn til sammenligning (fjerner klubb-suffikser/tegnsetting/store
+// bokstaver), slik at "Nord, SK - Fotball" og "Nord SK" regnes som samme lag.
+function normName(s){
+  return (s||"").toLowerCase()
+    .replace(/\s*-\s*fotball\b/g,"")
+    .replace(/\bfotball\b/g,"")
+    .replace(/[^a-z0-9æøå]/g,"");
+}
+// Plukker ut MOTSTANDEREN sitt navn fra et hjemme/borte-par, gitt en kjenning
+// (ownMarker) som identifiserer "oss" - "NSV" i egne data, "Nationalkameratene"
+// i arkets rå Cup Manager-eksport. Nøkkelen blir dato + motstander, ikke bare
+// dato alene - flere av lagene spiller to kamper samme dag.
+function opponentOf(hjemme, borte, ownMarker){
+  return (hjemme||"").indexOf(ownMarker)>=0 ? borte : hjemme;
+}
+function matchKey(dato, opp){
+  var dm = dayMonthKey(dato);
+  return dm ? (dm+"|"+normName(opp)) : null;
+}
 function applySheetTab(csvText, matches){
   var rows = parseCsv(csvText);
   var headerRow = -1, cols = {};
@@ -736,16 +755,17 @@ function applySheetTab(csvText, matches){
   }
   if(headerRow<0) return;
   rows[headerRow].forEach(function(h,ci){ cols[(h||"").trim()] = ci; });
-  var byDay = {};
+  var byKey = {};
   matches.forEach(function(m){
-    var k = dayMonthKey(m.dato);
-    if(k) byDay[k] = m;
+    var k = matchKey(m.dato, opponentOf(m.hjemme, m.borte, "NSV"));
+    if(k) byKey[k] = m;
   });
   for(var r=headerRow+1;r<rows.length;r++){
     var row = rows[r];
-    var k = dayMonthKey(row[cols["Time"]]);
+    var opp = opponentOf(row[cols["Home team"]], row[cols["Away team"]], "Nationalkameratene");
+    var k = matchKey(row[cols["Time"]], opp);
     var resVal = (row[cols["Result"]]||"").trim();
-    if(k && byDay[k] && resVal) byDay[k].resultat = resVal.replace(/\s+/g,"");
+    if(k && byKey[k] && resVal) byKey[k].resultat = resVal.replace(/\s+/g,"");
   }
 }
 function renderAllMatchLists(){
