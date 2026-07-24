@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, viewport-fit=cover">
 <title>Mathea &amp; Aurora · Norway Cup 2026</title>
-<meta name="description" content="Kampoppsett, sluttspill, kart og pakkeliste for Mathea (J14) og Aurora (J16) i Norway Cup 2026">
+<meta name="description" content="Kampoppsett, sluttspill, kart og pakkeliste for Mathea (NSV J14) og Aurora (NSV J16) i Norway Cup 2026">
 <meta property="og:title" content="Mathea & Aurora · Norway Cup 2026">
 <meta property="og:description" content="Kampoppsett, sluttspill, kart og pakkeliste for begge jentene, samlet på ett sted.">
 <meta name="theme-color" content="#4A1942">
@@ -75,6 +75,15 @@ section.panel.active{display:block;}
 .noticebar .noticeicon{font-size:20px;line-height:1;flex-shrink:0;}
 .noticebar .noticelabel{font-family:var(--font-display);font-weight:700;font-size:11.5px;text-transform:uppercase;letter-spacing:.04em;margin-bottom:2px;}
 .noticebar .noticetext{font-size:13.5px;font-weight:600;line-height:1.4;}
+
+.weathercard{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);padding:7px 12px 6px;margin-bottom:14px;}
+.weather-label{font-family:var(--font-display);font-weight:600;font-size:10.5px;color:var(--heading);margin-bottom:4px;text-transform:uppercase;letter-spacing:.03em;}
+.weather-row{display:flex;gap:6px;}
+.weathertile{flex:1 1 0;background:var(--navy-900);border-radius:10px;padding:3px 2px 4px;text-align:center;}
+.weathertile .wt-row{display:flex;align-items:center;justify-content:center;gap:3px;line-height:1;}
+.weathertile .wt-icon{font-size:12px;}
+.weathertile b{font-size:13px;color:#fff;font-family:var(--font-display);font-weight:600;}
+.weathertile span{display:block;font-size:7.5px;color:#a9b3cc;text-transform:uppercase;letter-spacing:.02em;margin-top:1px;}
 
 .screenhome{display:none;}
 .screenhome.active{display:block;}
@@ -157,6 +166,9 @@ section.panel.active{display:block;}
 .linkbtn{display:inline-flex;align-items:center;gap:6px;background:var(--navy-700);color:#fff;text-decoration:none;padding:9px 14px;border-radius:10px;font-size:13px;font-weight:700;margin:4px 6px 4px 0;border:none;cursor:pointer;font-family:inherit;}
 .linkbtn.gold{background:var(--gold);color:#4a3900;}
 .linkbtn.outline{background:var(--neutral-100);color:var(--heading);}
+.linkbtn.navy{background:var(--navy-700);color:#fff;}
+ul.plain{margin:0;padding-left:20px;line-height:1.6;font-size:14.5px;}
+ul.plain li{margin-bottom:4px;}
 
 nav.bottomnav{position:fixed;left:0;right:0;bottom:0;z-index:30;display:flex;background:var(--paper);border-top:3px solid var(--fam-900);box-shadow:0 -2px 10px rgba(0,0,0,.10);}
 nav.bottomnav button{flex:1 1 0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;border:none;background:transparent;padding:8px 4px 7px;font-size:11.5px;font-weight:700;color:var(--muted);cursor:pointer;position:relative;min-height:44px;}
@@ -201,9 +213,9 @@ footer .mocknote{background:var(--neutral-100);border-radius:10px;padding:10px 1
   <div class="hero">
     <div class="nextlabel">Neste kamp</div>
     <div class="countdown"><b>3</b><span>dager, 4 timer</span></div>
-    <div class="nextmatch">Kvernbit IL 1 <span style="opacity:.7;font-weight:400">vs</span> Aurora</div>
+    <div class="nextmatch">Kvernbit IL 1 <span style="opacity:.7;font-weight:400">vs</span> NSV J16</div>
     <div style="font-size:13px;opacity:.9;margin-top:2px">Søndag 26.07 · 08:00 · Bjølsenfeltet (03BJ11)</div>
-    <div class="whochip"><span class="dot" style="background:var(--p-aurora11)"></span>Aurora · J16 11'er</div>
+    <div class="whochip"><span class="dot" style="background:var(--p-aurora11)"></span>NSV J16 · 11'er</div>
   </div>
 
   <div class="noticebar">
@@ -217,14 +229,20 @@ footer .mocknote{background:var(--neutral-100);border-radius:10px;padding:10px 1
   <!-- ================= FAMILIE (hub) ================= -->
   <section class="panel active" id="panel-familie">
 
+    <div class="weathercard" id="weathercard" style="display:none">
+      <div class="weather-label">Været i dag (Ekeberg)</div>
+      <div class="weather-row" id="weather-row"></div>
+    </div>
+
     <div class="screenhome active" id="home-familie">
       <div class="intro">
-        <p style="font-size:14.5px;line-height:1.5;margin:0 0 4px">Samler kampene til Mathea (NSV J14) og Aurora (J16, samarbeidslag) på ett sted, i samme design som lagsiden.</p>
+        <p style="font-size:14.5px;line-height:1.5;margin:0 0 4px">Samler kampene til Mathea (NSV J14) og Aurora (NSV J16) på ett sted, i samme design som lagsiden.</p>
       </div>
-      <nav class="quickgrid" aria-label="Snarveier">
+      <nav class="quickgrid odd" aria-label="Snarveier">
         <a href="#scr-fam-kampoppsett" class="qcard" data-target="scr-fam-kampoppsett"><span class="qicon">⚽</span><span>Kampoppsett</span></a>
         <a href="#scr-fam-sluttspill" class="qcard" data-target="scr-fam-sluttspill"><span class="qicon">🏆</span><span>Sluttspill</span></a>
         <a href="#scr-fam-kart" class="qcard" data-target="scr-fam-kart"><span class="qicon">🗺️</span><span>Kart &amp; reisevei</span></a>
+        <a href="#scr-fam-konsert" class="qcard" data-target="scr-fam-konsert"><span class="qicon">🎤</span><span>Åpningsshow</span></a>
         <a href="#scr-fam-pakkeliste" class="qcard" data-target="scr-fam-pakkeliste"><span class="qicon">🎒</span><span>Pakkeliste</span></a>
       </nav>
     </div>
@@ -239,15 +257,15 @@ footer .mocknote{background:var(--neutral-100);border-radius:10px;padding:10px 1
       <div class="screenbody">
         <p class="note" style="margin-top:0">Gruppespillet er ikke ferdig ennå, så motstander avhenger av sluttplassering i gruppa. Under vises <strong>alle mulige neste kamper</strong> for hver av de tre lagene - riktig kamp blir tydelig når gruppespillet er avgjort.</p>
         <div class="posection">
-          <div class="posection-head"><div class="mc-who mathea">Mathea · J14</div></div>
+          <div class="posection-head"><div class="mc-who mathea">NSV J14</div></div>
           <div class="matchlist" id="fam-po-mathea"></div>
         </div>
         <div class="posection">
-          <div class="posection-head"><div class="mc-who aurora11">Aurora · 11'er</div></div>
+          <div class="posection-head"><div class="mc-who aurora11">NSV J16 · 11'er</div></div>
           <div class="matchlist" id="fam-po-aurora11"></div>
         </div>
         <div class="posection">
-          <div class="posection-head"><div class="mc-who aurora7">Aurora · 7'er</div></div>
+          <div class="posection-head"><div class="mc-who aurora7">NSV J16 · 7'er</div></div>
           <div class="matchlist" id="fam-po-aurora7"></div>
         </div>
       </div>
@@ -258,6 +276,29 @@ footer .mocknote{background:var(--neutral-100);border-radius:10px;padding:10px 1
       <div class="screenbody">
         <p class="note" style="margin-top:0">«Kart» åpner stedet i Google Maps. «Reiserute» viser vei dit med kollektivtransport fra der du er nå. «Arenakart» er Norway Cups eget kart over banenummer på stedet.</p>
         <div id="fam-venuelist"></div>
+      </div>
+    </div>
+
+    <div class="screen" id="scr-fam-konsert">
+      <div class="screentop"><button class="backbtn" type="button" data-back>‹ <span>Tilbake</span></button><h2 class="screentitle">🎤 Åpningsshow</h2></div>
+      <div class="screenbody">
+        <p>Norway Cup åpnes lørdag 25. juli med parade og åpningsshow på Ekebergsletta. Showet er <strong>gratis</strong> for alle - deltakere, foreldre og andre som vil se på.</p>
+        <ul class="plain">
+          <li>Oppmøte på Ekeberg senest kl. 16:30</li>
+          <li>Parade fra Ekeberg Camping kl. 17:00</li>
+          <li>Åpningsshow på hovedscenen kl. 18:00</li>
+        </ul>
+        <h3>Artister (kunngjort så langt)</h3>
+        <ul class="plain">
+          <li><strong>Madeléne</strong> - countrypop, kjent for «Henda mot himmelen»</li>
+          <li><strong>Streetboys</strong> - trio kjent for «Misforstått»</li>
+          <li><strong>Viljar &amp; Máijá</strong> - årets BlimE-artister (Máijá vant Sámi Grand Prix 2025)</li>
+          <li><strong>Bargee</strong></li>
+          <li><strong>El Papi</strong></li>
+          <li><strong>Puls</strong> - duo kjent for «Ordner seg» og «Sånne som oss»</li>
+        </ul>
+        <p class="note" style="margin-top:0">Dette er ikke nødvendigvis hele lineupen - Norway Cup slipper flere artistnavn fortløpende fram mot showet. Siste oppdatering fra oss: 20. juli 2026.</p>
+        <a class="linkbtn navy" href="https://norwaycup.no/aktuelt/" target="_blank" rel="noopener">Se siste nytt fra Norway Cup →</a>
       </div>
     </div>
 
@@ -312,11 +353,11 @@ footer .mocknote{background:var(--neutral-100);border-radius:10px;padding:10px 1
 
   <!-- ================= AURORA ================= -->
   <section class="panel" id="panel-aurora">
-    <div class="daylabel"><span class="daychip" style="background:var(--p-aurora11)">J16 · 11'er</span></div>
+    <div class="daylabel"><span class="daychip" style="background:var(--p-aurora11)">NSV J16 · 11'er</span></div>
     <div class="matchlist" id="aurora11-matchlist"></div>
     <a class="linkbtn" style="background:var(--p-aurora11)" href="https://norwaycup.cupmanager.net/2026,nb/result/team/78377322" target="_blank" rel="noopener">⚽ Sjekk live på Norway Cup →</a>
 
-    <div class="daylabel" style="margin-top:26px"><span class="daychip" style="background:var(--p-aurora7)">J16 · 7'er</span></div>
+    <div class="daylabel" style="margin-top:26px"><span class="daychip" style="background:var(--p-aurora7)">NSV J16 · 7'er</span></div>
     <div class="matchlist" id="aurora7-matchlist"></div>
     <a class="linkbtn" style="background:var(--p-aurora7)" href="https://norwaycup.cupmanager.net/2026,nb/result/team/78377319" target="_blank" rel="noopener">⚽ Sjekk live på Norway Cup →</a>
 
@@ -327,11 +368,11 @@ footer .mocknote{background:var(--neutral-100);border-radius:10px;padding:10px 1
       <div class="screenbody">
         <p class="note" style="margin-top:0">Avhenger av plassering i gruppa - her er alle mulighetene for begge lagene.</p>
         <div class="posection">
-          <div class="posection-head"><div class="mc-who aurora11">Aurora · 11'er</div></div>
+          <div class="posection-head"><div class="mc-who aurora11">NSV J16 · 11'er</div></div>
           <div class="matchlist" id="aurora11-po-matchlist"></div>
         </div>
         <div class="posection">
-          <div class="posection-head"><div class="mc-who aurora7">Aurora · 7'er</div></div>
+          <div class="posection-head"><div class="mc-who aurora7">NSV J16 · 7'er</div></div>
           <div class="matchlist" id="aurora7-po-matchlist"></div>
         </div>
       </div>
@@ -382,23 +423,23 @@ var VENUES = {
 var BANE45_KART = "https://norwaycup.no/wp-content/uploads/2025/11/2e555191-9488-4d29-8e9f-30e16877cb2b.pdf";
 
 var MATHEA = [
-  {dato:"Søndag 26.07", tid:"19:40", bane:"Ekeberg 38 (EK11)", venue:"ekeberg", underlag:"grass", hjemme:"NSV", borte:"Røa IL", borteFlag:false},
-  {dato:"Mandag 27.07", tid:"10:30", bane:"Ekeberg 42 (EK11)", venue:"ekeberg", underlag:"grass", hjemme:"Godøy IL", borte:"NSV", borteFlag:true},
-  {dato:"Mandag 27.07", tid:"19:40", bane:"Ekeberg 45 (EK11)", venue:"ekeberg", underlag:"grass", hjemme:"NSV", borte:"Nord SK", borteFlag:false, banekart:BANE45_KART, banekartLabel:"Kart - Bane 45"},
-  {dato:"Tirsdag 28.07", tid:"15:30", bane:"Ekeberg 45 (EK11)", venue:"ekeberg", underlag:"grass", hjemme:"Askøy FK", borte:"NSV", borteFlag:true, banekart:BANE45_KART, banekartLabel:"Kart - Bane 45"}
+  {dato:"Søndag 26.07", tid:"19:40", bane:"Ekeberg 38 (EK11)", venue:"ekeberg", underlag:"grass", hjemme:"NSV J14", borte:"Røa IL", borteFlag:false},
+  {dato:"Mandag 27.07", tid:"10:30", bane:"Ekeberg 42 (EK11)", venue:"ekeberg", underlag:"grass", hjemme:"Godøy IL", borte:"NSV J14", borteFlag:true},
+  {dato:"Mandag 27.07", tid:"19:40", bane:"Ekeberg 45 (EK11)", venue:"ekeberg", underlag:"grass", hjemme:"NSV J14", borte:"Nord SK", borteFlag:false, banekart:BANE45_KART, banekartLabel:"Kart - Bane 45"},
+  {dato:"Tirsdag 28.07", tid:"15:30", bane:"Ekeberg 45 (EK11)", venue:"ekeberg", underlag:"grass", hjemme:"Askøy FK", borte:"NSV J14", borteFlag:true, banekart:BANE45_KART, banekartLabel:"Kart - Bane 45"}
 ];
 
 var AURORA11 = [
-  {dato:"Søndag 26.07", tid:"08:00", bane:"Bjølsenfeltet 03BJ11", venue:"bjolsen", underlag:"grass", hjemme:"Kvernbit IL 1", borte:"Aurora", borteFlag:true},
-  {dato:"Søndag 26.07", tid:"15:30", bane:"Ekeberg 26 (EK11)", venue:"ekeberg", underlag:"turf", hjemme:"Aurora", borte:"Nordhordland/Radøy", borteFlag:false},
-  {dato:"Mandag 27.07", tid:"17:45", bane:"Abildsø 02 (AB11)", venue:"abildso", underlag:"grass", hjemme:"Aurora", borte:"Giske IL/Godøy", borteFlag:false},
-  {dato:"Tirsdag 28.07", tid:"08:00", bane:"Rustad 02 (RU11)", venue:"rustad", underlag:"grass", hjemme:"Fotballklubben Landsås", borte:"Aurora", borteFlag:true}
+  {dato:"Søndag 26.07", tid:"08:00", bane:"Bjølsenfeltet 03BJ11", venue:"bjolsen", underlag:"grass", hjemme:"Kvernbit IL 1", borte:"NSV J16", borteFlag:true},
+  {dato:"Søndag 26.07", tid:"15:30", bane:"Ekeberg 26 (EK11)", venue:"ekeberg", underlag:"turf", hjemme:"NSV J16", borte:"Nordhordland/Radøy", borteFlag:false},
+  {dato:"Mandag 27.07", tid:"17:45", bane:"Abildsø 02 (AB11)", venue:"abildso", underlag:"grass", hjemme:"NSV J16", borte:"Giske IL/Godøy", borteFlag:false},
+  {dato:"Tirsdag 28.07", tid:"08:00", bane:"Rustad 02 (RU11)", venue:"rustad", underlag:"grass", hjemme:"Fotballklubben Landsås", borte:"NSV J16", borteFlag:true}
 ];
 
 var AURORA7 = [
-  {dato:"Søndag 26.07", tid:"10:00", bane:"Valle Hovin 04 (VA7)", venue:"vallehovin", underlag:"turf", hjemme:"Sykkylven IL", borte:"Aurora", borteFlag:true},
-  {dato:"Mandag 27.07", tid:"12:00", bane:"Valle Hovin 04 (VA7)", venue:"vallehovin", underlag:"turf", hjemme:"Aurora", borte:"Geilo IL", borteFlag:false},
-  {dato:"Tirsdag 28.07", tid:"12:00", bane:"Ekeberg 22 (EK7)", venue:"ekeberg", underlag:"grass", hjemme:"Bønes Idrettslag", borte:"Aurora", borteFlag:true}
+  {dato:"Søndag 26.07", tid:"10:00", bane:"Valle Hovin 04 (VA7)", venue:"vallehovin", underlag:"turf", hjemme:"Sykkylven IL", borte:"NSV J16", borteFlag:true},
+  {dato:"Mandag 27.07", tid:"12:00", bane:"Valle Hovin 04 (VA7)", venue:"vallehovin", underlag:"turf", hjemme:"NSV J16", borte:"Geilo IL", borteFlag:false},
+  {dato:"Tirsdag 28.07", tid:"12:00", bane:"Ekeberg 22 (EK7)", venue:"ekeberg", underlag:"grass", hjemme:"Bønes Idrettslag", borte:"NSV J16", borteFlag:true}
 ];
 
 var MATHEA_PO = [
@@ -423,6 +464,40 @@ var AURORA7_PO = [
   {plass:"3. plass i gruppa", runde:"Playoff B · 1/8-finale", dato:"Onsdag 29.07", tid:"17:00", bane:"Ekeberg 23 (EK7)", venue:"ekeberg", underlag:null, motstander:"4. i gruppe 2"},
   {plass:"4. plass i gruppa", runde:"Playoff B · 1/8-finale", dato:"Onsdag 29.07", tid:"17:00", bane:"Valle Hovin 05 (VA7)", venue:"vallehovin", underlag:null, motstander:"3. i gruppe 5"}
 ];
+
+// Værvisning - henter live data fra Open-Meteo (ingen API-nøkkel nødvendig) for
+// Ekebergsletta, delt opp i fire deler av dagen. Vises kun hvis hentingen faktisk
+// lykkes - ingen placeholder-tall ved feil. Samme funksjon som på lagsiden.
+function weatherIcon(code){
+  if(code===0) return "☀️";
+  if(code<=2) return "⛅";
+  if(code===3) return "☁️";
+  if(code===45||code===48) return "🌫️";
+  if(code>=51&&code<=67) return "🌦️";
+  if(code>=71&&code<=77) return "🌨️";
+  if(code>=80&&code<=82) return "🌧️";
+  if(code>=95) return "⛈️";
+  return "🌡️";
+}
+function renderWeather(){
+  var card = document.getElementById("weathercard");
+  var row = document.getElementById("weather-row");
+  if(!card || !row) return;
+  fetch("https://api.open-meteo.com/v1/forecast?latitude=59.891&longitude=10.774&hourly=temperature_2m,weathercode&timezone=Europe%2FOslo&forecast_days=1")
+    .then(function(res){ return res.json(); })
+    .then(function(data){
+      var buckets = [{label:"Morgen",h:8},{label:"Formiddag",h:12},{label:"Ettermiddag",h:16},{label:"Kveld",h:20}];
+      row.innerHTML = buckets.map(function(b){
+        var idx = data.hourly.time.findIndex(function(t){ return new Date(t).getHours()===b.h; });
+        if(idx<0) idx = 0;
+        var temp = Math.round(data.hourly.temperature_2m[idx]);
+        var icon = weatherIcon(data.hourly.weathercode[idx]);
+        return '<div class="weathertile"><div class="wt-row"><span class="wt-icon">'+icon+'</span><b>'+temp+'°</b></div><span>'+b.label+'</span></div>';
+      }).join("");
+      card.style.display = "";
+    })
+    .catch(function(){ /* Værdata utilgjengelig - boksen forblir skjult i stedet for å vise feil eller placeholder. */ });
+}
 
 function mapsLink(addr){ return "https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(addr); }
 function transitLink(addr){ return "https://www.google.com/maps/dir/?api=1&destination="+encodeURIComponent(addr)+"&travelmode=transit"; }
@@ -498,9 +573,9 @@ function renderFamilieList(){
     "Tirsdag 28.07":"📅 <b>Ekeberg midt på dagen:</b> Aurora 12:00 → Mathea 15:30. Nok en dag med god sjanse til å se begge."
   };
   var all = []
-    .concat(MATHEA.map(function(m){ return {m:m, who:"Mathea · J14", cls:"mathea", card:"p-mathea"}; }))
-    .concat(AURORA11.map(function(m){ return {m:m, who:"Aurora · 11'er", cls:"aurora11", card:"p-aurora11"}; }))
-    .concat(AURORA7.map(function(m){ return {m:m, who:"Aurora · 7'er", cls:"aurora7", card:"p-aurora7"}; }));
+    .concat(MATHEA.map(function(m){ return {m:m, who:"NSV J14", cls:"mathea", card:"p-mathea"}; }))
+    .concat(AURORA11.map(function(m){ return {m:m, who:"NSV J16 · 11'er", cls:"aurora11", card:"p-aurora11"}; }))
+    .concat(AURORA7.map(function(m){ return {m:m, who:"NSV J16 · 7'er", cls:"aurora7", card:"p-aurora7"}; }));
 
   var html = DAY_ORDER.map(function(day){
     var items = all.filter(function(x){ return x.m.dato===day; });
@@ -519,6 +594,7 @@ function renderTeamList(elId, matches){
 
 renderVenueList();
 renderFamilieList();
+renderWeather();
 renderTeamList("mathea-matchlist", MATHEA);
 renderTeamList("aurora11-matchlist", AURORA11);
 renderTeamList("aurora7-matchlist", AURORA7);
