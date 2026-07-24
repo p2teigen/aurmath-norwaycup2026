@@ -332,7 +332,7 @@ footer .mocknote{background:var(--neutral-100);border-radius:10px;padding:10px 1
       </div>
     </div>
 
-    <div class="overlapcard" style="margin-top:16px">📅 <span><b>Søndag:</b> Aurora 15:30 → Mathea 19:40, begge på Ekeberg. <b>Tirsdag:</b> Aurora 12:00 → Mathea 15:30, også begge på Ekeberg.</span></div>
+    <div class="overlapcard" style="margin-top:16px">📅 <span><b>Søndag:</b> Aurora 15:30 → Mathea 19:00, begge på Ekeberg. <b>Tirsdag:</b> Aurora 12:00 → Mathea 15:30, også begge på Ekeberg.</span></div>
 
   </section>
 
@@ -427,10 +427,10 @@ var VENUES = {
 var BANE45_KART = "https://norwaycup.no/wp-content/uploads/2025/11/2e555191-9488-4d29-8e9f-30e16877cb2b.pdf";
 
 var MATHEA = [
-  {dato:"Søndag 26.07", tid:"19:40", bane:"Ekeberg 38 (EK11)", venue:"ekeberg", underlag:"grass", hjemme:"NSV J14", borte:"Røa IL", borteFlag:false},
-  {dato:"Mandag 27.07", tid:"10:30", bane:"Ekeberg 42 (EK11)", venue:"ekeberg", underlag:"grass", hjemme:"Godøy IL", borte:"NSV J14", borteFlag:true},
-  {dato:"Mandag 27.07", tid:"19:40", bane:"Ekeberg 45 (EK11)", venue:"ekeberg", underlag:"grass", hjemme:"NSV J14", borte:"Nord SK", borteFlag:false, banekart:BANE45_KART, banekartLabel:"Kart - Bane 45"},
-  {dato:"Tirsdag 28.07", tid:"15:30", bane:"Ekeberg 45 (EK11)", venue:"ekeberg", underlag:"grass", hjemme:"Askøy FK", borte:"NSV J14", borteFlag:true, banekart:BANE45_KART, banekartLabel:"Kart - Bane 45"}
+  {dato:"Søndag 26.07", tid:"19:00", bane:"Ekeberg 38 (EK11)", venue:"ekeberg", underlag:"grass", hjemme:"NSV J14", borte:"Røa IL", borteFlag:false, matchnr:"2 14 0 18 004"},
+  {dato:"Mandag 27.07", tid:"10:30", bane:"Ekeberg 42 (EK11)", venue:"ekeberg", underlag:"grass", hjemme:"Godøy IL", borte:"NSV J14", borteFlag:true, matchnr:"2 14 0 18 007"},
+  {dato:"Mandag 27.07", tid:"19:40", bane:"Ekeberg 45 (EK11)", venue:"ekeberg", underlag:"grass", hjemme:"NSV J14", borte:"Nord SK", borteFlag:false, banekart:BANE45_KART, banekartLabel:"Kart - Bane 45", matchnr:"2 14 0 18 002"},
+  {dato:"Tirsdag 28.07", tid:"15:30", bane:"Ekeberg 45 (EK11)", venue:"ekeberg", underlag:"grass", hjemme:"Askøy FK", borte:"NSV J14", borteFlag:true, banekart:BANE45_KART, banekartLabel:"Kart - Bane 45", matchnr:"2 14 0 18 001"}
 ];
 
 var AURORA11 = [
@@ -673,7 +673,7 @@ function renderPlayoffList(elId, list, cardClass){
 function renderFamilieList(){
   var DAY_ORDER = ["Søndag 26.07","Mandag 27.07","Tirsdag 28.07"];
   var OVERLAP = {
-    "Søndag 26.07":"📅 <b>Ekeberg hele ettermiddagen/kvelden:</b> Aurora 15:30 → Mathea 19:40. God tid til begge, og jentene kan trolig se hverandre spille.",
+    "Søndag 26.07":"📅 <b>Ekeberg hele ettermiddagen/kvelden:</b> Aurora 15:30 → Mathea 19:00. God tid til begge, og jentene kan trolig se hverandre spille.",
     "Tirsdag 28.07":"📅 <b>Ekeberg midt på dagen:</b> Aurora 12:00 → Mathea 15:30. Nok en dag med god sjanse til å se begge."
   };
   var all = []
@@ -755,17 +755,22 @@ function applySheetTab(csvText, matches){
   }
   if(headerRow<0) return;
   rows[headerRow].forEach(function(h,ci){ cols[(h||"").trim()] = ci; });
-  var byKey = {};
+  var byKey = {}, byMatchnr = {};
   matches.forEach(function(m){
+    if(m.matchnr) byMatchnr[m.matchnr.trim()] = m;
     var k = matchKey(m.dato, opponentOf(m.hjemme, m.borte, "NSV"));
     if(k) byKey[k] = m;
   });
   for(var r=headerRow+1;r<rows.length;r++){
     var row = rows[r];
-    var opp = opponentOf(row[cols["Home team"]], row[cols["Away team"]], "Nationalkameratene");
-    var k = matchKey(row[cols["Time"]], opp);
+    var mnr = (row[cols["Matchnr"]]||"").trim();
+    var target = mnr && byMatchnr[mnr];
+    if(!target){
+      var opp = opponentOf(row[cols["Home team"]], row[cols["Away team"]], "Nationalkameratene");
+      target = byKey[matchKey(row[cols["Time"]], opp)];
+    }
     var resVal = (row[cols["Result"]]||"").trim();
-    if(k && byKey[k] && resVal) byKey[k].resultat = resVal.replace(/\s+/g,"");
+    if(target && resVal) target.resultat = resVal.replace(/\s+/g,"");
   }
 }
 function renderAllMatchLists(){
