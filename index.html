@@ -64,6 +64,16 @@ header.top p{margin:0;opacity:.9;font-size:13.5px;}
 .hero .countdown{display:flex;align-items:baseline;gap:8px;margin-bottom:10px;}
 .hero .countdown b{font-size:30px;color:var(--fam-accent);line-height:1;font-family:var(--font-display);font-weight:600;}
 .hero .countdown span{font-size:13px;opacity:.9;}
+.hero .cdlive{margin-bottom:12px;}
+.hero .cdlive .cd-label{font-size:11px;text-transform:uppercase;letter-spacing:.05em;opacity:.75;margin-bottom:6px;}
+.hero .cdlive .cd-grid{display:flex;gap:10px;}
+.hero .cdlive .cd-unit{display:flex;flex-direction:column;align-items:center;min-width:40px;}
+.hero .cdlive .cd-unit b{font-size:24px;color:var(--fam-accent);line-height:1;font-family:var(--font-display);font-weight:600;font-variant-numeric:tabular-nums;}
+.hero .cdlive .cd-unit span{font-size:10px;opacity:.85;text-transform:uppercase;letter-spacing:.03em;margin-top:3px;}
+.hero .cdlive.live .cd-label{color:#ff8080;opacity:1;display:flex;align-items:center;gap:6px;}
+.hero .livedot{width:8px;height:8px;border-radius:50%;background:#ff3b3b;display:inline-block;flex-shrink:0;animation:livepulse 1.4s ease-in-out infinite;}
+.hero .cd-sub{font-size:10px;opacity:.65;margin-top:5px;}
+@keyframes livepulse{0%,100%{opacity:1;}50%{opacity:.25;}}
 .hero .whochip{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.14);border-radius:999px;padding:4px 10px 4px 6px;font-size:12px;font-weight:700;margin-top:10px;}
 .hero .whochip .dot{width:9px;height:9px;border-radius:50%;display:inline-block;}
 
@@ -210,13 +220,7 @@ footer .mocknote{background:var(--neutral-100);border-radius:10px;padding:10px 1
 </header>
 
 <main>
-  <div class="hero">
-    <div class="nextlabel">Neste kamp</div>
-    <div class="countdown"><b>3</b><span>dager, 4 timer</span></div>
-    <div class="nextmatch">Kvernbit IL 1 <span style="opacity:.7;font-weight:400">vs</span> NSV J16</div>
-    <div style="font-size:13px;opacity:.9;margin-top:2px">Søndag 26.07 · 08:00 · Bjølsenfeltet (03BJ11)</div>
-    <div class="whochip"><span class="dot" style="background:var(--p-aurora11)"></span>NSV J16 · 11'er</div>
-  </div>
+  <div class="hero" id="hero"></div>
 
   <div class="noticebar">
     <span class="noticeicon">📍</span>
@@ -499,6 +503,104 @@ function renderWeather(){
     .catch(function(){ /* Værdata utilgjengelig - boksen forblir skjult i stedet for å vise feil eller placeholder. */ });
 }
 
+// --- Live hero-nedtelling (dager/timer/min/sek) - egen "neste kamp" per fane ---
+// Familie viser den som kommer først uansett hvem det er, Mathea/Aurora viser bare
+// sine egne. Samme prinsipp (og samme tikke-logikk) som på lagsiden.
+function parseKampTid(dato, tid){
+  var dm = /(\d{2})\.(\d{2})/.exec(dato||"");
+  var tm = /(\d{2}):(\d{2})/.exec(tid||"");
+  if(!dm) return null;
+  var hh = tm ? parseInt(tm[1],10) : 0;
+  var mi = tm ? parseInt(tm[2],10) : 0;
+  return new Date(2026, parseInt(dm[2],10)-1, parseInt(dm[1],10), hh, mi);
+}
+function pad2(n){ return n<10 ? "0"+n : ""+n; }
+
+function heroMatchesFor(activeKey){
+  if(activeKey==="mathea") return MATHEA.map(function(m){ return {m:m, who:"mathea"}; });
+  if(activeKey==="aurora") return AURORA11.concat(AURORA7).map(function(m){ return {m:m, who:"aurora"}; });
+  return MATHEA.map(function(m){ return {m:m, who:"mathea"}; })
+    .concat(AURORA11.map(function(m){ return {m:m, who:"aurora"}; }))
+    .concat(AURORA7.map(function(m){ return {m:m, who:"aurora"}; }));
+}
+function findNextMatch(activeKey){
+  var now = new Date(), best = null;
+  heroMatchesFor(activeKey).forEach(function(x){
+    var dt = parseKampTid(x.m.dato, x.m.tid);
+    if(dt && dt >= now && (!best || dt < best.dt)) best = {dt:dt, m:x.m, who:x.who};
+  });
+  return best;
+}
+// Anslått kamplengde (50 min) - ikke offisiell spilletid, kun brukt til å vise en
+// LIVE-markering mens kampen antas å pågå. Faktisk sluttsignal kan avvike.
+function findLiveMatch(activeKey){
+  var now = new Date(), live = null;
+  heroMatchesFor(activeKey).forEach(function(x){
+    var start = parseKampTid(x.m.dato, x.m.tid);
+    if(!start) return;
+    var end = new Date(start.getTime() + 50*60000);
+    if(now >= start && now <= end) live = {dt:end, m:x.m, who:x.who};
+  });
+  return live;
+}
+function countdownHtml(next, live){
+  if(live){
+    return '<div class="cdlive live"><div class="cd-label"><span class="livedot"></span>Kampen pågår nå</div><div class="cd-grid">'
+      + '<div class="cd-unit"><b id="cd-d">0</b><span>dager</span></div>'
+      + '<div class="cd-unit"><b id="cd-h">00</b><span>timer</span></div>'
+      + '<div class="cd-unit"><b id="cd-m">00</b><span>min</span></div>'
+      + '<div class="cd-unit"><b id="cd-s">00</b><span>sek</span></div>'
+      + '</div><div class="cd-sub">ca. tid igjen (anslag)</div></div>';
+  }
+  if(!next){
+    return '<div class="countdown"><b>🏆</b><span>Ingen flere kamper i planen</span></div>';
+  }
+  return '<div class="cdlive"><div class="cd-label">Nedtelling til neste kamp</div><div class="cd-grid">'
+    + '<div class="cd-unit"><b id="cd-d">0</b><span>dager</span></div>'
+    + '<div class="cd-unit"><b id="cd-h">00</b><span>timer</span></div>'
+    + '<div class="cd-unit"><b id="cd-m">00</b><span>min</span></div>'
+    + '<div class="cd-unit"><b id="cd-s">00</b><span>sek</span></div>'
+    + '</div></div>';
+}
+var HERO_ACTIVE_KEY = "familie";
+var HERO_TARGET_DT = null;
+var HERO_TICK_ID = null;
+function updateLiveCountdown(){
+  var elD = document.getElementById("cd-d");
+  if(!elD || !HERO_TARGET_DT) return;
+  var diff = HERO_TARGET_DT - new Date();
+  if(diff <= 0){ renderHero(HERO_ACTIVE_KEY); return; }
+  var totalSec = Math.floor(diff/1000);
+  elD.textContent = Math.floor(totalSec / 86400);
+  document.getElementById("cd-h").textContent = pad2(Math.floor((totalSec % 86400) / 3600));
+  document.getElementById("cd-m").textContent = pad2(Math.floor((totalSec % 3600) / 60));
+  document.getElementById("cd-s").textContent = pad2(totalSec % 60);
+}
+var HERO_WHO_LABEL = {mathea:"Mathea · NSV J14", aurora:"Aurora · NSV J16"};
+var HERO_WHO_DOT = {mathea:"var(--p-mathea)", aurora:"var(--p-aurora11)"};
+function nextPostHtml(next, live, activeKey){
+  var effective = live || next;
+  var labelPrefix = live ? "🔴 PÅGÅR NÅ" : "NESTE KAMP";
+  if(!effective){
+    return '<div class="nextlabel">'+labelPrefix+'</div><div class="nextmatch">Ingen flere kamper i planen</div>';
+  }
+  var m = effective.m;
+  var whoChip = activeKey==="familie" ? ('<div class="whochip"><span class="dot" style="background:'+HERO_WHO_DOT[effective.who]+'"></span>'+HERO_WHO_LABEL[effective.who]+'</div>') : "";
+  return '<div class="nextlabel">'+labelPrefix+'</div>'
+    + '<div class="nextmatch">'+m.hjemme+' <span style="opacity:.7;font-weight:400">vs</span> '+m.borte+'</div>'
+    + '<div style="font-size:13px;opacity:.9;margin-top:2px">'+m.dato+' · '+m.tid+' · '+m.bane+'</div>'
+    + whoChip;
+}
+function renderHero(activeKey){
+  HERO_ACTIVE_KEY = activeKey;
+  var live = findLiveMatch(activeKey);
+  var next = findNextMatch(activeKey);
+  HERO_TARGET_DT = live ? live.dt : (next ? next.dt : null);
+  document.getElementById("hero").innerHTML = countdownHtml(next, live) + nextPostHtml(next, live, activeKey);
+  updateLiveCountdown();
+  if(!HERO_TICK_ID) HERO_TICK_ID = setInterval(updateLiveCountdown, 1000);
+}
+
 function mapsLink(addr){ return "https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(addr); }
 function transitLink(addr){ return "https://www.google.com/maps/dir/?api=1&destination="+encodeURIComponent(addr)+"&travelmode=transit"; }
 function underlagPill(u){
@@ -595,6 +697,7 @@ function renderTeamList(elId, matches){
 renderVenueList();
 renderFamilieList();
 renderWeather();
+renderHero("familie");
 renderTeamList("mathea-matchlist", MATHEA);
 renderTeamList("aurora11-matchlist", AURORA11);
 renderTeamList("aurora7-matchlist", AURORA7);
@@ -640,6 +743,7 @@ document.getElementById("tabs").addEventListener("click", function(e){
   btn.classList.add("active");
   document.querySelectorAll("section.panel").forEach(function(p){ p.classList.remove("active"); });
   document.getElementById("panel-"+btn.dataset.tab).classList.add("active");
+  renderHero(btn.dataset.tab);
   window.scrollTo({top:0, behavior:"instant"});
 });
 
