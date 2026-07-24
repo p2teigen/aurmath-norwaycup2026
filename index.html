@@ -696,6 +696,80 @@ function renderTeamList(elId, matches){
   document.getElementById(elId).innerHTML = matches.map(function(m){ return matchCardHtml(m, null, "", ""); }).join("");
 }
 
+// --- Live resultater fra familiens eget Google-ark ---
+// Arket fylles ut manuelt av familien selv (bekreftet) - ingen kobling til
+// cupmanager.net her i det hele tatt. Vi leser bare det familien har skrevet inn,
+// via Googles egne offentlige CSV-eksport for hver fane (én fane per lag).
+// Er "Result"-cellen tom, lar vi m.resultat stå usatt slik at kortet fortsetter
+// å vise "Ikke spilt" - vi finner ikke på et resultat.
+var RESULTS_SHEET_ID = "1Kj9X7qDlb-V7Si1tPnrgsZuL7FrqOpzk7Xj4AExX55c";
+
+function parseCsv(text){
+  var rows = [], row = [], field = "", inQuotes = false;
+  for(var i=0;i<text.length;i++){
+    var c = text[i];
+    if(inQuotes){
+      if(c==='"'){ if(text[i+1]==='"'){ field+='"'; i++; } else inQuotes=false; }
+      else field+=c;
+    } else {
+      if(c==='"') inQuotes=true;
+      else if(c===','){ row.push(field); field=""; }
+      else if(c==='\n' || c==='\r'){
+        if(c==='\r' && text[i+1]==='\n') i++;
+        row.push(field); field=""; rows.push(row); row=[];
+      } else field+=c;
+    }
+  }
+  if(field.length || row.length){ row.push(field); rows.push(row); }
+  return rows.filter(function(r){ return r.some(function(v){ return v!==""; }); });
+}
+function dayMonthKey(str){
+  var m = /(\d{1,2})[.\/](\d{1,2})/.exec(str||"");
+  if(!m) return null;
+  return (m[1].length<2?"0"+m[1]:m[1]) + "-" + (m[2].length<2?"0"+m[2]:m[2]);
+}
+function applySheetTab(csvText, matches){
+  var rows = parseCsv(csvText);
+  var headerRow = -1, cols = {};
+  for(var i=0;i<rows.length;i++){
+    if(rows[i].indexOf("Home team")>=0){ headerRow = i; break; }
+  }
+  if(headerRow<0) return;
+  rows[headerRow].forEach(function(h,ci){ cols[(h||"").trim()] = ci; });
+  var byDay = {};
+  matches.forEach(function(m){
+    var k = dayMonthKey(m.dato);
+    if(k) byDay[k] = m;
+  });
+  for(var r=headerRow+1;r<rows.length;r++){
+    var row = rows[r];
+    var k = dayMonthKey(row[cols["Time"]]);
+    var resVal = (row[cols["Result"]]||"").trim();
+    if(k && byDay[k] && resVal) byDay[k].resultat = resVal.replace(/\s+/g,"");
+  }
+}
+function renderAllMatchLists(){
+  renderFamilieList();
+  renderTeamList("mathea-matchlist", MATHEA);
+  renderTeamList("aurora11-matchlist", AURORA11);
+  renderTeamList("aurora7-matchlist", AURORA7);
+  renderHero(HERO_ACTIVE_KEY);
+}
+function loadSheetResults(){
+  var tabs = [
+    {name:"NSV J14", matches:MATHEA},
+    {name:"NSV J16 11er", matches:AURORA11},
+    {name:"NSV J16 7er", matches:AURORA7}
+  ];
+  var base = "https://docs.google.com/spreadsheets/d/"+RESULTS_SHEET_ID+"/gviz/tq?tqx=out:csv&sheet=";
+  Promise.all(tabs.map(function(t){
+    return fetch(base+encodeURIComponent(t.name))
+      .then(function(res){ return res.ok ? res.text() : ""; })
+      .then(function(csv){ if(csv) applySheetTab(csv, t.matches); })
+      .catch(function(){ /* arket utilgjengelig akkurat nå - behold "Ikke spilt" i stedet for å vise feil */ });
+  })).then(renderAllMatchLists);
+}
+
 renderVenueList();
 renderFamilieList();
 renderWeather();
@@ -710,6 +784,9 @@ renderPlayoffList("fam-po-aurora7", AURORA7_PO, "p-aurora7");
 renderPlayoffList("mathea-po-matchlist", MATHEA_PO, "p-mathea");
 renderPlayoffList("aurora11-po-matchlist", AURORA11_PO, "p-aurora11");
 renderPlayoffList("aurora7-po-matchlist", AURORA7_PO, "p-aurora7");
+
+loadSheetResults();
+setInterval(loadSheetResults, 3*60*1000);
 
 // --- Navigasjon: samme fram/tilbake-mønster (quickgrid -> screen -> Tilbake) som hovedsiden ---
 function openScreen(screenId){
