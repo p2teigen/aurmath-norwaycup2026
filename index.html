@@ -635,6 +635,7 @@ function matchCardHtml(m, whoLabel, whoClass, cardClass){
   var away = '<strong>'+m.borte+'</strong>';
   var pillU = underlagPill(m.underlag);
   var whoChip = whoLabel ? '<div class="mc-who '+whoClass+'">'+whoLabel+'</div>' : "";
+  var res = m.resultat ? ('<span class="result">'+m.resultat+'</span>') : '<span class="result pending">Ikke spilt</span>';
   return '<div class="matchcard '+cardClass+'">'
     + '<div class="mc-date"><span>'+weekday+'</span><b>'+dayMonth+'</b><span>'+m.tid+'</span></div>'
     + '<div class="mc-mid">'
@@ -642,7 +643,7 @@ function matchCardHtml(m, whoLabel, whoClass, cardClass){
     +   '<div class="mc-teams">'+home+' <span class="mc-vs">vs</span> '+away+'</div>'
     +   '<div class="mc-venue">'+m.bane+(pillU?(' '+pillU):'')+'</div>'
     + '</div>'
-    + '<div class="mc-result"><span class="result pending">Ikke spilt</span></div>'
+    + '<div class="mc-result">'+res+'</div>'
     + matchVenueBtns(m)
     + '</div>';
 }
@@ -652,6 +653,7 @@ function playoffCardHtml(p, cardClass){
   var weekday = (dateParts[0]||"").slice(0,3).toUpperCase();
   var dayMonth = dateParts[1] || p.dato;
   var pillU = underlagPill(p.underlag);
+  var res = p.resultat ? ('<span class="result">'+p.resultat+'</span>') : '<span class="result pending">Ikke avgjort</span>';
   return '<div class="matchcard '+cardClass+'">'
     + '<div class="mc-date"><span>'+weekday+'</span><b>'+dayMonth+'</b><span>'+p.tid+'</span></div>'
     + '<div class="mc-mid">'
@@ -660,7 +662,7 @@ function playoffCardHtml(p, cardClass){
     +   '<div class="mc-teams">vs '+p.motstander+'</div>'
     +   '<div class="mc-venue">'+p.bane+(pillU?(' '+pillU):'')+'</div>'
     + '</div>'
-    + '<div class="mc-result"><span class="result pending">Ikke avgjort</span></div>'
+    + '<div class="mc-result">'+res+'</div>'
     + matchVenueBtns(p)
     + '</div>';
 }
